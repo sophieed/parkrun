@@ -1,0 +1,19 @@
+Package: parkrun
+Type: Package
+Title: Scrape and Analyse Parkrun Data
+Version: 0.1.0
+Author: Sophie Edgar-Andrews (github @sophieed)
+Maintainer: Sophie Edgar-Andrews <sophie.edgarandrews@gmail.com>
+Description: This package contains scripts that allow Parkrun data to be scraped from the website, converted into a table, and analysed to provide further insights.
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports:
+    dplyr,
+    stringr,
+    ggplot2,
+    lubridate,
+    rvest,
+    chromote,
+    xml2
+License: CC BY 4.0
