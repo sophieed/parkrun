@@ -25,7 +25,7 @@ scrapeData <- function(event, race_number) {
 #'
 #' Processes the data to transform the scraped information into a useable table.
 #' Regular expressions are used to pull out the key data, and any necessary type
-#' conversions are performed.
+#' conversions are performed. Speed and pace are calculated.
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param data The data that needs processing
@@ -52,7 +52,9 @@ processData <- function(data, your_name = NULL) {
            sex_total = as.numeric(str_extract(X3, "(?<=/)[0-9]+")),
            club = X5,
            is_you = ifelse(is.null(your_name), FALSE, your_name == name)) %>%
-    select(-c(X1, X2, X3, X4, X5, X6)) # remove raw columns
+    select(-c(X1, X2, X3, X4, X5, X6)) %>% # remove raw columns
+    mutate(speed = (5/time_length(time,"minute"))*60,
+           pace = time_length(time,"minute")/5)
 
   return(processed)
 }

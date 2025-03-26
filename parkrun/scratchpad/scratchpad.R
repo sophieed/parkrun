@@ -1,6 +1,5 @@
 #' TODO - List of things I plan to do
 #'
-#' - Calculate speed
 #' - Calculate relative positions (e.g out of total runners; out of sex class; out of age-sex class
 #' - Create more plots and metrics to visualise data for individual runners (e.g. average speed plots by grouping)
 #' - Work out a way to optionally obfuscate names of runners that aren't you (not strictly necessary, but better for data protection

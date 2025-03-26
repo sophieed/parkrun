@@ -19,7 +19,7 @@ a data frame containing the processed data ready for analysis
 \description{
 Processes the data to transform the scraped information into a useable table.
 Regular expressions are used to pull out the key data, and any necessary type
-conversions are performed.
+conversions are performed. Speed and pace are calculated.
 }
 \examples{
 data <- processData(data, 'John SMITH');
