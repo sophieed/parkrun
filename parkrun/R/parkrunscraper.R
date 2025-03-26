@@ -67,12 +67,18 @@ processData <- function(data, your_name = NULL) {
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param data The data to be plotted. This must be the processed form, not the
 #' raw scraped form
+#' @param filter_by A way to filter the dataset. Options are currently 'sex'
 #' @return A plot of the data
 #' @import dplyr ggplot2
 #' @examples
 #' plot <- plotPositionByTime(data);
+#' plot <- plotPositionByTime(data, 'sex')
 #' @export
-plotPositionByTime <- function(data){
+plotPositionByTime <- function(data, filter_by = NULL){
+
+  if(!is.null(filter_by) && filter_by == 'sex'){
+    data <- data %>% filter(sex == data$sex[!is.na(data$is_you) & data$is_you])
+  }
 
   p <- ggplot2::ggplot() +
     geom_point(data = data,

@@ -6,6 +6,8 @@
 #' - Develop a way to save (obfuscated) processed data locally to negate the need to keep scraping it
 #' - Develop time series data (need to find a way to timestamp race numbers)
 #'
+#' - Work on the README documentation for this package
+#'
 
 
 # RUN THE SCRIPTS
@@ -16,6 +18,6 @@ library(dplyr)
 event <- "worcester"
 race_number <- 650
 
-scrapeData(event, race_number) %>%
+data <- scrapeData(event, race_number) %>%
   processData() %>%
   plotPositionByTime()
