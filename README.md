@@ -1,2 +1,2 @@
 # parkrun
-R code to scrape data from the parkrun website for analysis
+This is an R package (under development), which can be used to scrape data from the Parkrun website for analysis.
