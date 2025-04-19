@@ -2,11 +2,8 @@
 #'
 #'   TODO - List of things I plan to do next
 #'
-#' - Develop a way to save your own processed data locally to negate the need to
-#'   keep scraping it (currently issues with dates and times only)
-#'
-#'   Efficiency: check whether run already exists in your saved data before
-#'   trying to re-scrape it.
+#' - Pull local copy of data first and check whether the run already exists, to
+#'   negate the need to scrape it again
 #'
 #' - Build timeseries
 #'
@@ -35,10 +32,7 @@ race_number <- 654
 
 # PULL ONLY YOUR OWN DATA
 your_data <-fetchAllYourData(your_name)
-
-
-#TODO - Work on exporting data
-# write.csv(apply(your_data,2,as.character),"./data/exported_data/your_data.csv")
+exportData(your_data, your_name) # Save it to your working directory
 
 
 # PULL ALL DATA FOR A PARTICULAR RACE

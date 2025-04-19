@@ -159,3 +159,22 @@ fetchAllYourData <- function(your_name){
 
   return(data)
 }
+
+
+#' Export Data
+#'
+#' Exports data to a csv file in the data/exported_data folder of your working
+#' directory.
+#'
+#' @author Sophie Edgar-Andrews (github @sophieed)
+#' @param data The data you would like to save
+#' @param name The name of the file
+#' @examples
+#' exportData(your_data, your_name);
+#' exportData(data, "John SMITH");
+#' @export
+exportData <- function(data, name) {
+  write.csv(apply(data,2,as.character),
+            paste0("./data/exported_data/", name, "_data.csv"))
+
+}
