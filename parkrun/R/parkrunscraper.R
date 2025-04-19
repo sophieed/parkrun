@@ -121,10 +121,10 @@ fetchRaceDataForIndividual <- function(location, race_number, your_name){
 
 #' Fetch All of Your Data
 #'
-#' Function to pull all data for an individual. Requires a csv file in the 'data'
-#' folder containing a list of all races for a location. The file name should be
-#' the location name, matching the formatting on the Parkrun website (e.g.
-#' 'worcester.csv'). Each run number should be on a new line.
+#' Function to pull all data for an individual. Requires a csv file in the
+#' data/imported_data' folder containing a list of all races for a location. The
+#' file name should be the location name, matching the formatting on the Parkrun
+#' website (e.g. 'worcester.csv'). Each run number should be on a new line.
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param your_name The name of the person you're interested in viewing. This
@@ -138,7 +138,7 @@ fetchRaceDataForIndividual <- function(location, race_number, your_name){
 #' @export
 fetchAllYourData <- function(your_name){
 
-  your_runs <- list.files("./data", pattern="*.csv", full.names=TRUE) %>%
+  your_runs <- list.files("./data/imported_data", pattern="*.csv", full.names=TRUE) %>%
     tidytable::map_df(~read_csv(., col_names = 'race_number', col_types = 'i', id = 'location')) %>%
     mutate(location = str_remove(basename(location), ".csv"))
 
@@ -146,6 +146,8 @@ fetchAllYourData <- function(your_name){
                                  your_runs$location,
                                  your_runs$race_number,
                                  your_name)))
+
+  rownames(data) <- NULL
 
   return(data)
 }

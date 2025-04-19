@@ -15,10 +15,10 @@ that format is 'Firstname LASTNAME'}
 all data for the listed runs associated with that individual
 }
 \description{
-Function to pull all data for an individual. Requires a csv file in the 'data'
-folder containing a list of all races for a location. The file name should be
-the location name, matching the formatting on the Parkrun website (e.g.
-'worcester.csv'). Each run number should be on a new line.
+Function to pull all data for an individual. Requires a csv file in the
+data/imported_data' folder containing a list of all races for a location. The
+file name should be the location name, matching the formatting on the Parkrun
+website (e.g. 'worcester.csv'). Each run number should be on a new line.
 }
 \examples{
 data <- fetchAllYourData('John SMITH');
