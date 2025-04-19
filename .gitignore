@@ -3,5 +3,4 @@
 .RData
 .Ruserdata
 /*.Rcheck/
-exported_data/
 .DS_Store
