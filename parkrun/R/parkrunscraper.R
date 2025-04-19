@@ -71,7 +71,7 @@ processData <- function(data, your_name = NULL) {
            name = str_extract(X2, "^.*?(?=[0-9])"),
            number_of_races = as.numeric(str_extract(X2, "([0-9]+)")),
            sex = str_trim(str_extract(X2, "(?<=\n)(.*)")),
-           time = ms(str_extract(X6, "([0-9]+):([0-9]+)")),
+           time = ms(str_extract(X6, "([0-9]+):([0-9]+)")), #TODO need to fix this. Doesn't work for >1hr
            category = str_extract(X4, "[A-Z]{2}[0-9]{2}-[0-9]{2}"),
            age_grading = as.numeric(str_extract(X4, "[0-9]{2}.[0-9]{2}(?=%)"))/100,
            position_by_sex = as.numeric(str_extract(X3, "[0-9]+(?=/)")),
