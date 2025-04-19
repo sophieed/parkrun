@@ -16,9 +16,34 @@ scrapeData <- function(event, race_number) {
   data <- read_html_live(paste0("https://www.parkrun.org.uk/", event, "/results/", race_number, "/")) %>%
     html_elements(".js-ResultsTbody") %>%
     html_table() %>%
-    data.frame()
+    data.frame() %>%
+    mutate(date = scrapeRaceDate(event, race_number))
 
   return(data)
+}
+
+
+#' Scrape Race Date
+#'
+#' Scrapes the date that a particular race took place
+#'
+#' @author Sophie Edgar-Andrews (github @sophieed)
+#' @param event The event name (usually the Parkrun location. e.g. 'worcester')
+#' @param race_number The race number (an integer. e.g. 431)
+#' @return the date of the race
+#' @import dplyr chromote rvest xml2
+#' @examples
+#' date <- scrapeRaceDate('worcester', 620);
+#' date <- scrapeRaceDate('ludlow', 65);
+#' @export
+scrapeRaceDate <- function(event, race_number){
+
+  date <- read_html_live(paste0("https://www.parkrun.org.uk/", event, "/results/", race_number, "/")) %>%
+    html_element("h3") %>%
+    html_text() %>%
+    str_extract("\\d{1,2}\\/\\d{1,2}\\/\\d{2,4}")
+
+  return(as.Date(date, "%d/%m/%Y"))
 }
 
 
@@ -106,14 +131,15 @@ fetchRaceDataForIndividual <- function(location, race_number, your_name){
 #' must be in the same format as it appears on the website. As #' of March 2025,
 #' that format is 'Firstname LASTNAME'
 #' @return all data for the listed runs associated with that individual
-#' @import dplyr tidytable
+#' @import dplyr
+#' @importFrom tidytable map_df
 #' @examples
 #' data <- fetchAllYourData('John SMITH');
 #' @export
 fetchAllYourData <- function(your_name){
 
   your_runs <- list.files("./data", pattern="*.csv", full.names=TRUE) %>%
-    map_df(~read_csv(., col_names = 'race_number', col_types = 'i', id = 'location')) %>%
+    tidytable::map_df(~read_csv(., col_names = 'race_number', col_types = 'i', id = 'location')) %>%
     mutate(location = str_remove(basename(location), ".csv"))
 
   data <- as.data.frame(t(mapply(fetchRaceDataForIndividual,

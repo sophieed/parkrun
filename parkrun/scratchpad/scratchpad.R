@@ -2,11 +2,13 @@
 #'
 #'   TODO - List of things I plan to do next
 #'
-#' - Scrape dates from website to allow timeseries to be plotted
 #' - Develop a way to save your own processed data locally to negate the need to
 #'   keep scraping it
+#'   Efficiency: check whether that run already exists in your saved data before
+#'   trying to re-scrape it.
 #'
 #' - Add more filters
+#' - Build timeseries
 #' - Pull filter functions out so can be used with different plots
 #' - Calculate relative positions (e.g out of total runners; out of sex class;
 #'   out of age-sex class
@@ -24,8 +26,6 @@ library(tidyverse)
 
 # Define any global variables
 your_name = 'Sophie EDGAR-ANDREWS'
-event <- 'worcester'
-race_number <- 654
 
 
 # PULL ONLY YOUR OWN DATA
@@ -38,6 +38,9 @@ data_for_particular_race <- scrapeData(event, race_number) %>%
 
 
 # PLOT YOUR OWN POSITION AGAINST OTHERS OF YOUR SEX
+event <- 'worcester'
+race_number <- 654
+
 scrapeData(event, race_number) %>%
   processData('Sophie EDGAR-ANDREWS') %>%
   plotPositionByTime('sex')
