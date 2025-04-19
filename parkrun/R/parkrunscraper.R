@@ -59,7 +59,8 @@ scrapeRaceDate <- function(event, race_number){
 #' applicable. This must be in the same format as it appears on the website. As
 #' of March 2025, that format is 'Firstname LASTNAME'
 #' @return a data frame containing the processed data ready for analysis
-#' @import dplyr lubridate stringr
+#' @import dplyr stringr
+#' @importFrom hms hms
 #' @examples
 #' data <- processData(data, 'John SMITH');
 #' data <- processData(data)
@@ -71,15 +72,22 @@ processData <- function(data, your_name = NULL) {
            name = str_extract(X2, "^.*?(?=[0-9])"),
            number_of_races = as.numeric(str_extract(X2, "([0-9]+)")),
            sex = str_trim(str_extract(X2, "(?<=\n)(.*)")),
-           time = ms(str_extract(X6, "([0-9]+):([0-9]+)")), #TODO need to fix this. Doesn't work for >1hr
+           time = str_extract(X6, "([0-9]):([0-9]+):([0-9]+)|([0-9]+):([0-9]+)"),
            category = str_extract(X4, "[A-Z]{2}[0-9]{2}-[0-9]{2}"),
            age_grading = as.numeric(str_extract(X4, "[0-9]{2}.[0-9]{2}(?=%)"))/100,
            position_by_sex = as.numeric(str_extract(X3, "[0-9]+(?=/)")),
            sex_total = as.numeric(str_extract(X3, "(?<=/)[0-9]+")),
            club = X5,
            is_you = ifelse(is.null(your_name), FALSE, your_name == name)) %>%
-    select(-c(X1, X2, X3, X4, X5, X6)) %>% # remove raw columns
-    mutate(speed = (5/time_length(time,"minute"))*60,
+    select(-c(X1, X2, X3, X4, X5, X6))# %>% # remove raw columns
+
+  # Process times
+  processed <- processed %>%
+    mutate(time = ifelse(str_detect(time, "([0-9]):([0-9]+):([0-9]+)"),
+                         time,
+                         paste0('0:',time)),
+           time = parse_hms(time),
+           speed = (5/time_length(time,"minute"))*60,
            pace = time_length(time,"minute")/5)
 
   return(processed)

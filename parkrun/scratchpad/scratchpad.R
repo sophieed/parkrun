@@ -2,8 +2,6 @@
 #'
 #'   TODO - List of things I plan to do next
 #'
-#'   URGENT: Fix time for those who took longer than an hour
-#'
 #' - Develop a way to save your own processed data locally to negate the need to
 #'   keep scraping it (currently issues with dates and times only)
 #'
