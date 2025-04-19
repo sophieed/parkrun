@@ -10,7 +10,8 @@ plotPositionByTime(data, filter_by = NULL)
 \item{data}{The data to be plotted. This must be the processed form, not the
 raw scraped form}
 
-\item{filter_by}{A way to filter the dataset. Options are currently 'sex'}
+\item{filter_by}{A way to filter the dataset. Options are currently 'sex' and
+'category'}
 }
 \value{
 A plot of the data
@@ -21,6 +22,7 @@ Plots the finishing position against completion time
 \examples{
 plot <- plotPositionByTime(data);
 plot <- plotPositionByTime(data, 'sex')
+plotPositionByTime(data, 'category')
 }
 \author{
 Sophie Edgar-Andrews (github @sophieed)

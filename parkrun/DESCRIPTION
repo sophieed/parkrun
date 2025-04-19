@@ -15,5 +15,6 @@ Imports:
     lubridate,
     rvest,
     chromote,
-    xml2
+    xml2,
+    tidytable
 License: CC BY 4.0

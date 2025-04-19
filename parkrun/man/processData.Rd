@@ -17,7 +17,7 @@ of March 2025, that format is 'Firstname LASTNAME'}
 a data frame containing the processed data ready for analysis
 }
 \description{
-Processes the data to transform the scraped information into a useable table.
+Processes the data to transform the scraped information into a useable format.
 Regular expressions are used to pull out the key data, and any necessary type
 conversions are performed. Speed and pace are calculated.
 }

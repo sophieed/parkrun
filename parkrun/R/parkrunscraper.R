@@ -1,11 +1,12 @@
 #' Scrape Data
 #'
-#' Scrapes data results from the Parkrun website. This is functional as of March 2025
+#' Scrapes all data for a particular race from the Parkrun website. This is
+#' functional as of March 2025
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
-#' @param event The event name (usually the Parkrun location)
-#' @param race_number The race number
-#' @return a data frame containing the scraped data
+#' @param event The event name (usually the Parkrun location. e.g. 'worcester')
+#' @param race_number The race number (an integer. e.g. 431)
+#' @return a dataframe containing the raw scraped data
 #' @import dplyr chromote rvest xml2
 #' @examples
 #' data <- scrapeData('worcester', 620);
@@ -23,7 +24,7 @@ scrapeData <- function(event, race_number) {
 
 #' Process Data
 #'
-#' Processes the data to transform the scraped information into a useable table.
+#' Processes the data to transform the scraped information into a useable format.
 #' Regular expressions are used to pull out the key data, and any necessary type
 #' conversions are performed. Speed and pace are calculated.
 #'
@@ -60,6 +61,70 @@ processData <- function(data, your_name = NULL) {
 }
 
 
+#' Fetch Race Data for Individual
+#'
+#' Helper function to scrape data from the Parkrun website for a particular race
+#' and individual. Saves the scraped line to a file.
+#'
+#' @author Sophie Edgar-Andrews (github @sophieed)
+#' @param location The Parkrun location. Usually the location (e.g. 'ludlow')
+#' @param race_number The race number. An integer (e.g. 243)
+#' @param your_name The name of the person you're interested in viewing. This
+#' must be in the same format as it appears on the website. As #' of March 2025,
+#' that format is 'Firstname LASTNAME'
+#' @return the data for that individual
+#' @import dplyr
+#' @examples
+#' data <- fetchRaceDataForIndividual('worcester', 431, 'John SMITH');
+#' @export
+fetchRaceDataForIndividual <- function(location, race_number, your_name){
+  data <- scrapeData(location, race_number) %>%
+    processData(your_name) %>%
+    filter(is_you) %>%
+    mutate(location = location,
+           race_number = race_number)
+
+  if(exists('your_data') && is.data.frame(get('your_data'))){
+    your_data <- rbind(your_data, data)
+  } else {
+    your_data <- data
+  }
+
+  return(your_data)
+}
+
+
+#' Fetch All of Your Data
+#'
+#' Function to pull all data for an individual. Requires a csv file in the 'data'
+#' folder containing a list of all races for a location. The file name should be
+#' the location name, matching the formatting on the Parkrun website (e.g.
+#' 'worcester.csv'). Each run number should be on a new line.
+#'
+#' @author Sophie Edgar-Andrews (github @sophieed)
+#' @param your_name The name of the person you're interested in viewing. This
+#' must be in the same format as it appears on the website. As #' of March 2025,
+#' that format is 'Firstname LASTNAME'
+#' @return all data for the listed runs associated with that individual
+#' @import dplyr tidytable
+#' @examples
+#' data <- fetchAllYourData('John SMITH');
+#' @export
+fetchAllYourData <- function(your_name){
+
+  your_runs <- list.files("./data", pattern="*.csv", full.names=TRUE) %>%
+    map_df(~read_csv(., col_names = 'race_number', col_types = 'i', id = 'location')) %>%
+    mutate(location = str_remove(basename(location), ".csv"))
+
+  data <- as.data.frame(t(mapply(fetchRaceDataForIndividual,
+                                 your_runs$location,
+                                 your_runs$race_number,
+                                 your_name)))
+
+  return(data)
+}
+
+
 #' Plot Position by Time
 #'
 #' Plots the finishing position against completion time
@@ -67,12 +132,14 @@ processData <- function(data, your_name = NULL) {
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param data The data to be plotted. This must be the processed form, not the
 #' raw scraped form
-#' @param filter_by A way to filter the dataset. Options are currently 'sex'
+#' @param filter_by A way to filter the dataset. Options are currently 'sex' and
+#' 'category'
 #' @return A plot of the data
 #' @import dplyr ggplot2
 #' @examples
 #' plot <- plotPositionByTime(data);
 #' plot <- plotPositionByTime(data, 'sex')
+#' plotPositionByTime(data, 'category')
 #' @export
 plotPositionByTime <- function(data, filter_by = NULL){
 
@@ -80,12 +147,16 @@ plotPositionByTime <- function(data, filter_by = NULL){
     data <- data %>% filter(sex == data$sex[!is.na(data$is_you) & data$is_you])
   }
 
+  if(!is.null(filter_by) && filter_by == 'category'){
+    data <- data %>% filter(category == data$category[!is.na(data$is_you) & data$is_you])
+  }
+
   p <- ggplot2::ggplot() +
     geom_point(data = data,
-               aes(x = time, y = absolute_position, color = sex, alpha = is_you, size = is_you)) +
-    labs(x = "Finish Time", y = "Finishing Position",
+               aes(x = absolute_position, y = time, color = sex, alpha = is_you, size = is_you)) +
+    labs(x = "Finishing Position", y = "Finishing Time",
          title = "Position by Time") +
-    scale_x_time() +
+    scale_y_time() +
     guides(alpha = "none", size = "none") +
     theme_classic()
 

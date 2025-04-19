@@ -7,15 +7,16 @@
 scrapeData(event, race_number)
 }
 \arguments{
-\item{event}{The event name (usually the Parkrun location)}
+\item{event}{The event name (usually the Parkrun location. e.g. 'worcester')}
 
-\item{race_number}{The race number}
+\item{race_number}{The race number (an integer. e.g. 431)}
 }
 \value{
-a data frame containing the scraped data
+a dataframe containing the raw scraped data
 }
 \description{
-Scrapes data results from the Parkrun website. This is functional as of March 2025
+Scrapes all data for a particular race from the Parkrun website. This is
+functional as of March 2025
 }
 \examples{
 data <- scrapeData('worcester', 620);

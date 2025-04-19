@@ -1,23 +1,43 @@
-#' TODO - List of things I plan to do
+################################################################################
 #'
-#' - Calculate relative positions (e.g out of total runners; out of sex class; out of age-sex class
-#' - Create more plots and metrics to visualise data for individual runners (e.g. average speed plots by grouping)
-#' - Work out a way to optionally obfuscate names of runners that aren't you (not strictly necessary, but better for data protection
-#' - Develop a way to save (obfuscated) processed data locally to negate the need to keep scraping it
-#' - Develop time series data (need to find a way to timestamp race numbers)
+#'   TODO - List of things I plan to do next
+#'
+#' - Scrape dates from website to allow timeseries to be plotted
+#' - Develop a way to save your own processed data locally to negate the need to
+#'   keep scraping it
+#'
+#' - Add more filters
+#' - Pull filter functions out so can be used with different plots
+#' - Calculate relative positions (e.g out of total runners; out of sex class;
+#'   out of age-sex class
 #'
 #' - Work on the README documentation for this package
 #'
+#'
+################################################################################
 
 
-# RUN THE SCRIPTS
-
+# Import packages
 library(parkrun)
-library(dplyr)
+library(tidyverse)
 
-event <- "worcester"
-race_number <- 650
 
-data <- scrapeData(event, race_number) %>%
-  processData() %>%
-  plotPositionByTime()
+# Define any global variables
+your_name = 'Sophie EDGAR-ANDREWS'
+event <- 'worcester'
+race_number <- 654
+
+
+# PULL ONLY YOUR OWN DATA
+your_data <-fetchAllYourData(your_name)
+
+
+# PULL ALL DATA FOR A PARTICULAR RACE
+data_for_particular_race <- scrapeData(event, race_number) %>%
+  processData()
+
+
+# PLOT YOUR OWN POSITION AGAINST OTHERS OF YOUR SEX
+scrapeData(event, race_number) %>%
+  processData('Sophie EDGAR-ANDREWS') %>%
+  plotPositionByTime('sex')
