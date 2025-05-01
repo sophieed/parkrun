@@ -1,7 +1,7 @@
 #' Scrape Data
 #'
 #' Scrapes all data for a particular race from the Parkrun website. This is
-#' functional as of March 2025
+#' functional as of May 2025
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param event The event name (usually the Parkrun location. e.g. 'worcester')
@@ -57,7 +57,7 @@ scrapeRaceDate <- function(event, race_number){
 #' @param data The data that needs processing
 #' @param your_name The name of the person you're interested in viewing, if
 #' applicable. This must be in the same format as it appears on the website. As
-#' of March 2025, that format is 'Firstname LASTNAME'
+#' of May 2025, that format is 'Firstname LASTNAME'
 #' @return a data frame containing the processed data ready for analysis
 #' @import dplyr stringr
 #' @importFrom hms hms parse_hms
@@ -103,7 +103,7 @@ processData <- function(data, your_name = NULL) {
 #' @param location The Parkrun location. Usually the location (e.g. 'ludlow')
 #' @param race_number The race number. An integer (e.g. 243)
 #' @param your_name The name of the person you're interested in viewing. This
-#' must be in the same format as it appears on the website. As #' of March 2025,
+#' must be in the same format as it appears on the website. As of May 2025,
 #' that format is 'Firstname LASTNAME'
 #' @return the data for that individual
 #' @import dplyr
@@ -136,7 +136,7 @@ fetchRaceDataForIndividual <- function(location, race_number, your_name){
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param your_name The name of the person you're interested in viewing. This
-#' must be in the same format as it appears on the website. As #' of March 2025,
+#' must be in the same format as it appears on the website. As of May 2025,
 #' that format is 'Firstname LASTNAME'
 #' @return all data for the listed runs associated with that individual
 #' @import dplyr
@@ -161,6 +161,34 @@ fetchAllYourData <- function(your_name){
 }
 
 
+#' Fetch Archived Data
+#'
+#' Function to fetch all archived data for an individual from the 'exported_data'
+#' folder in the working directory.
+#'
+#' @author Sophie Edgar-Andrews (github @sophieed)
+#' @param your_name The name of the person you're interested in viewing. This
+#' must be in the same format as it appears on the website. As of May 2025,
+#' that format is 'Firstname LASTNAME'
+#' @return all archived data for the listed runs associated with that individual
+#' @import dplyr
+#' @importFrom tidytable map_df
+#' @importFrom lubridate as.Date
+#' @importFrom hms hms
+#' @examples
+#' data <- fetchArchivedData('John SMITH');
+#' @export
+fetchArchivedData <- function(your_name){
+
+  your_archived_data <- list.files("./data/exported_data", pattern = paste0(your_name, "_data.csv"), full.names=TRUE) %>%
+    read_csv() %>%
+    mutate(date = as.Date(date),
+           time = hms(time))
+
+  return(your_archived_data)
+}
+
+
 #' Export Data
 #'
 #' Exports data to a csv file in the data/exported_data folder of your working
@@ -175,6 +203,7 @@ fetchAllYourData <- function(your_name){
 #' @export
 exportData <- function(data, name) {
   write.csv(apply(data,2,as.character),
-            paste0("./data/exported_data/", name, "_data.csv"))
+            paste0("./data/exported_data/", name, "_data.csv"),
+            row.names = FALSE)
 
 }

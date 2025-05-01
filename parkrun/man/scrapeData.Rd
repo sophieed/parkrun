@@ -16,7 +16,7 @@ a dataframe containing the raw scraped data
 }
 \description{
 Scrapes all data for a particular race from the Parkrun website. This is
-functional as of March 2025
+functional as of May 2025
 }
 \examples{
 data <- scrapeData('worcester', 620);

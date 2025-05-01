@@ -2,6 +2,7 @@
 
 export(exportData)
 export(fetchAllYourData)
+export(fetchArchivedData)
 export(fetchRaceDataForIndividual)
 export(plotPositionByTime)
 export(processData)

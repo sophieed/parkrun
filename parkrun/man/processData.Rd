@@ -11,7 +11,7 @@ processData(data, your_name = NULL)
 
 \item{your_name}{The name of the person you're interested in viewing, if
 applicable. This must be in the same format as it appears on the website. As
-of March 2025, that format is 'Firstname LASTNAME'}
+of May 2025, that format is 'Firstname LASTNAME'}
 }
 \value{
 a data frame containing the processed data ready for analysis

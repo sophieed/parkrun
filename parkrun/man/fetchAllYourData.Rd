@@ -8,7 +8,7 @@ fetchAllYourData(your_name)
 }
 \arguments{
 \item{your_name}{The name of the person you're interested in viewing. This
-must be in the same format as it appears on the website. As #' of March 2025,
+must be in the same format as it appears on the website. As of May 2025,
 that format is 'Firstname LASTNAME'}
 }
 \value{
