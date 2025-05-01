@@ -60,7 +60,7 @@ scrapeRaceDate <- function(event, race_number){
 #' of March 2025, that format is 'Firstname LASTNAME'
 #' @return a data frame containing the processed data ready for analysis
 #' @import dplyr stringr
-#' @importFrom hms hms
+#' @importFrom hms hms parse_hms
 #' @examples
 #' data <- processData(data, 'John SMITH');
 #' data <- processData(data)
