@@ -20,7 +20,7 @@ the data for that individual
 }
 \description{
 Helper function to scrape data from the Parkrun website for a particular race
-and individual. Saves the scraped line to a file.
+and individual. Adds the scraped line to a data frame
 }
 \examples{
 data <- fetchRaceDataForIndividual('worcester', 431, 'John SMITH');

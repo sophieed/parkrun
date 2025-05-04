@@ -27,7 +27,7 @@ library(tidyverse)
 # Define any global variables
 your_name = 'Sophie EDGAR-ANDREWS'
 event <- 'worcester'
-race_number <- 654
+race_number <- 656
 
 
 # PULL ONLY YOUR OWN DATA

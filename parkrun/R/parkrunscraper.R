@@ -97,7 +97,7 @@ processData <- function(data, your_name = NULL) {
 #' Fetch Race Data for Individual
 #'
 #' Helper function to scrape data from the Parkrun website for a particular race
-#' and individual. Saves the scraped line to a file.
+#' and individual. Adds the scraped line to a data frame
 #'
 #' @author Sophie Edgar-Andrews (github @sophieed)
 #' @param location The Parkrun location. Usually the location (e.g. 'ludlow')
@@ -172,8 +172,8 @@ fetchAllYourData <- function(your_name){
 #' that format is 'Firstname LASTNAME'
 #' @return all archived data for the listed runs associated with that individual
 #' @import dplyr
+#' @import lubridate
 #' @importFrom tidytable map_df
-#' @importFrom lubridate as.Date
 #' @importFrom hms hms
 #' @examples
 #' data <- fetchArchivedData('John SMITH');
@@ -183,7 +183,8 @@ fetchArchivedData <- function(your_name){
   your_archived_data <- list.files("./data/exported_data", pattern = paste0(your_name, "_data.csv"), full.names=TRUE) %>%
     read_csv() %>%
     mutate(date = as.Date(date),
-           time = hms(time))
+           time = hms(time)) %>%
+    as.data.frame(.)
 
   return(your_archived_data)
 }
